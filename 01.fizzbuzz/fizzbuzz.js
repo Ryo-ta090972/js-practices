@@ -1,15 +1,19 @@
 for (let cnt = 1; cnt <= 20; cnt++) {
   switch (true) {
     case cnt % 3 === 0 && cnt % 5 === 0:
-      console.log("FizzBuzz");
+      whitePrint('FizzBuzz');
       break;
     case cnt % 3 === 0:
-      console.log("Fizz");
+      whitePrint('Fizz');
       break;
     case cnt % 5 === 0:
-      console.log("Buzz");
+      whitePrint('Buzz');
       break;
     default:
-      console.log(cnt);
+      whitePrint(cnt);
   }
+}
+
+function whitePrint(text){
+  console.log('\x1b[37m' + text);
 }
