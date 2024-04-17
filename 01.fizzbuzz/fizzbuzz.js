@@ -17,4 +17,3 @@ for (let cnt = 1; cnt <= 20; cnt++) {
 function whitePrint(text) {
   console.log("\x1b[37m" + text);
 }
-
