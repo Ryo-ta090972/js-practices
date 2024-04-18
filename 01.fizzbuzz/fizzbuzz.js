@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 function print(text){
   console.log(String(text));
 }
