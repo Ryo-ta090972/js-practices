@@ -9,6 +9,8 @@ const startDate = now.startOf("month");
 const endDate = now.endOf("month").date();
 const startDay = now.startOf("month").day();
 
+console.log(String(now.month() + 1).padStart(7, " ") + "月 " + now.year());
+
 for (let i = 0; i < startDay; i++) {
   process.stdout.write("  ");
 }
