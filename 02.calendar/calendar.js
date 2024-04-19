@@ -10,6 +10,7 @@ const endDate = now.endOf("month").date();
 const startDay = now.startOf("month").day();
 
 console.log(String(now.month() + 1).padStart(7, " ") + "月 " + now.year());
+console.log("日 月 火 水 木 金 土");
 
 for (let i = 0; i < startDay; i++) {
   process.stdout.write("  ");
@@ -26,4 +27,4 @@ for (let i = 0; i < endDate; i++) {
   }
 }
 
-console.log("");
+console.log();
