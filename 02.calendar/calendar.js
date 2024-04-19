@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 
+import minimist from "minimist";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja.js";
 dayjs.locale(ja);
 
+const argv = minimist(process.argv.slice(2));
 const now = dayjs();
 const startDate = now.startOf("month");
 const endDate = now.endOf("month").date();
 const startDay = now.startOf("month").day();
+let month = now.month() + 1;
+let year = now.year();
 
-console.log(String(now.month() + 1).padStart(7, " ") + "月 " + now.year());
+if (Object.keys(argv).includes("m")) {
+  month = argv.m;
+}
+
+if (Object.keys(argv).includes("y")) {
+  year = argv.y;
+}
+
+console.log(String(month).padStart(7, " ") + "月 " + year);
 console.log("日 月 火 水 木 金 土");
 
 for (let i = 0; i < startDay; i++) {
