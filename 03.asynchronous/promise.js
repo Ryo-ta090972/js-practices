@@ -5,37 +5,21 @@ import timers from "timers/promises";
 
 const db = new sqlite3.Database(":memory:");
 
-function createTablePromise(db, tableName, tableColumn) {
+function run(db, sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.run(`CREATE TABLE ${tableName} (${tableColumn})`, function (error) {
+    db.run(sql, params, function (error) {
       if (error) {
         reject(error);
       } else {
-        resolve();
+        resolve(this);
       }
     });
   });
 }
 
-function insertColumnDataPromise(db, tableName, columnName, columnData) {
+function all(db, sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT INTO ${tableName}(${columnName}) values(?)`,
-      [`${columnData}`],
-      function (error) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
-        }
-      },
-    );
-  });
-}
-
-function selectTableRowsPromise(db, tableName) {
-  return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM ${tableName}`, [], function (error, rows) {
+    db.all(sql, params, function (error, rows) {
       if (error) {
         reject(error);
       } else {
@@ -45,37 +29,27 @@ function selectTableRowsPromise(db, tableName) {
   });
 }
 
-function dropTablePromise(db, tableName) {
-  return new Promise((resolve, reject) => {
-    db.run(`DROP TABLE ${tableName}`, function (error) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-const tableName = "books";
-const tableColumn =
-  "id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE";
+let sql =
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)";
+let params = "";
 
 // エラー無し
-createTablePromise(db, tableName, tableColumn)
+run(db, sql)
   .then(() => {
     console.log("データベース生成完了");
-    const tableColumn = "title";
-    const columnData = "プロを目指す人のためのRuby入門";
-    return insertColumnDataPromise(db, tableName, tableColumn, columnData);
+    sql = "INSERT INTO books(title) values(?)";
+    params = ["プロを目指す人のためのRuby入門"];
+    return run(db, sql, params);
   })
   .then(() => {
     console.log("データ挿入完了");
-    return selectTableRowsPromise(db, tableName);
+    sql = "SELECT * FROM books";
+    return all(db, sql);
   })
   .then((rows) => {
     console.log("データ取得完了：", rows);
-    return dropTablePromise(db, tableName);
+    sql = "DROP TABLE books";
+    return run(db, sql);
   })
   .then(() => {
     console.log("データ削除完了");
@@ -87,20 +61,25 @@ createTablePromise(db, tableName, tableColumn)
 await timers.setTimeout(100);
 
 // エラーあり
-createTablePromise(db, tableName, tableColumn)
+sql =
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)";
+
+run(db, sql)
   .then(() => {
     console.log("データベース生成完了");
-    const tableColumn = "content";
-    const columnData = "Rubyを知れば、Railsはもっと楽しくなる";
-    return insertColumnDataPromise(db, tableName, tableColumn, columnData);
+    sql = "INSERT INTO books(content) values(?)";
+    params = ["Rubyを知れば、Railsはもっと楽しくなる"];
+    return run(db, sql, params);
   })
   .then(() => {
     console.log("データ挿入完了");
-    return selectTableRowsPromise(db, tableName);
+    sql = "SELECT * FROM books";
+    return all(db, sql);
   })
   .then((rows) => {
     console.log("データ取得完了：", rows);
-    return dropTablePromise(db, tableName);
+    sql = "DROP TABLE books";
+    return run(db, sql);
   })
   .then(() => {
     console.log("データ削除完了");
