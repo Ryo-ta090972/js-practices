@@ -29,61 +29,45 @@ function all(db, sql, params = []) {
   });
 }
 
-let sql =
-  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)";
-let params = "";
-
 // エラー無し
-run(db, sql)
+run(
+  db,
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
+)
   .then(() => {
-    console.log("データベース生成完了");
-    sql = "INSERT INTO books(title) values(?)";
-    params = ["プロを目指す人のためのRuby入門"];
-    return run(db, sql, params);
+    return run(db, "INSERT INTO books(title) values(?)", [
+      "プロを目指す人のためのRuby入門",
+    ]);
   })
-  .then(() => {
-    console.log("データ挿入完了");
-    sql = "SELECT * FROM books";
-    return all(db, sql);
+  .then((result) => {
+    console.log("追加したID:", result.lastID);
+    return all(db, "SELECT * FROM books");
   })
   .then((rows) => {
-    console.log("データ取得完了：", rows);
-    sql = "DROP TABLE books";
-    return run(db, sql);
-  })
-  .then(() => {
-    console.log("データ削除完了");
-  })
-  .catch((err) => {
-    console.log("エラー：", err);
+    console.log("取得したデータ：", rows);
+    return run(db, "DROP TABLE books");
   });
 
 await timers.setTimeout(100);
 
 // エラーあり
-sql =
-  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)";
-
-run(db, sql)
+run(
+  db,
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
+)
   .then(() => {
-    console.log("データベース生成完了");
-    sql = "INSERT INTO books(content) values(?)";
-    params = ["Rubyを知れば、Railsはもっと楽しくなる"];
-    return run(db, sql, params);
+    return run(db, "INSERT INTO books(content) values(?)", [
+      "Rubyを知れば、Railsはもっと楽しくなる",
+    ]);
   })
-  .then(() => {
-    console.log("データ挿入完了");
-    sql = "SELECT * FROM books";
-    return all(db, sql);
+  .then((result) => {
+    console.log("追加したID:", result.lastID);
+    return all(db, "SELECT * FROM books");
   })
   .then((rows) => {
-    console.log("データ取得完了：", rows);
-    sql = "DROP TABLE books";
-    return run(db, sql);
+    console.log("取得したデータ：", rows);
+    return run(db, "DROP TABLE books");
   })
-  .then(() => {
-    console.log("データ削除完了");
-  })
-  .catch((err) => {
-    console.log("エラー：", err);
+  .catch((error) => {
+    console.log("発生したエラー：", error.message);
   });
