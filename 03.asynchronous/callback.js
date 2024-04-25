@@ -15,9 +15,7 @@ const dbNoError = new sqlite3.Database(":memory:", () => {
           console.log("追加したID:", this.lastID);
           dbNoError.all("SELECT * FROM books", [], (error, rows) => {
             console.log("取得したデータ:", rows);
-            dbNoError.run("DROP TABLE books", () => {
-              console.log("booksテーブルを削除しました。");
-            });
+            dbNoError.run("DROP TABLE books");
           });
         },
       );
@@ -37,15 +35,13 @@ const dbExistError = new sqlite3.Database(":memory:", () => {
         ["Rubyを知れば、Railsはもっと楽しくなる"],
         (error) => {
           if (error) {
-            console.log("発生したエラー:", error);
+            console.log("発生したエラー:", error.message);
           }
           dbExistError.all("SELECT * FROM games", [], (error) => {
             if (error) {
-              console.log("発生したエラー:", error);
+              console.log("発生したエラー:", error.message);
             }
-            dbExistError.run("DROP TABLE books", () => {
-              console.log("booksテーブルを削除しました。");
-            });
+            dbExistError.run("DROP TABLE books");
           });
         },
       );
