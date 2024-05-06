@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 import sqlite3 from "sqlite3";
-import timers from "timers/promises";
 import { run, all } from "./promise.js";
 
-async function sample(db) {
+async function nonexistingErrorDatabase(db) {
   await run(
     db,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
@@ -21,7 +20,7 @@ async function sample(db) {
   await run(db, "DROP TABLE books");
 }
 
-async function sample2(db) {
+async function existingErrorDatabase(db) {
   await run(
     db,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
@@ -49,12 +48,8 @@ async function sample2(db) {
   await run(db, "DROP TABLE books");
 }
 
-const db = new sqlite3.Database(":memory:");
-
-// エラー無し
-sample(db);
-
-await timers.setTimeout(100);
-
-// エラーあり
-sample2(db);
+const Database = new sqlite3.Database(":memory:", () => {
+  nonexistingErrorDatabase(Database).then(() =>
+    existingErrorDatabase(Database),
+  );
+});
