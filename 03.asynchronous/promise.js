@@ -3,7 +3,7 @@
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 
-function run(db, sql, params = []) {
+export function run(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function (error) {
       if (error) {
@@ -15,7 +15,7 @@ function run(db, sql, params = []) {
   });
 }
 
-function all(db, sql, params = []) {
+export function all(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.all(sql, params, (error, rows) => {
       if (error) {

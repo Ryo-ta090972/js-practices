@@ -2,30 +2,7 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
-
-function run(db, sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (error) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(this);
-      }
-    });
-  });
-}
-
-function all(db, sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, function (error, rows) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
+import { run, all } from "./promise.js";
 
 async function sample(db) {
   await run(
