@@ -56,7 +56,7 @@ async function sample2(db) {
     ]);
   } catch (error) {
     if (error.code === "SQLITE_ERROR") {
-      console.log("発生したエラー:", error.message);
+      console.error("発生したエラー:", error.message);
     }
   }
 
@@ -65,7 +65,7 @@ async function sample2(db) {
     console.log("取得したデータ：", rows);
   } catch (error) {
     if (error.code === "SQLITE_ERROR") {
-      console.log("発生したエラー:", error.message);
+      console.error("発生したエラー:", error.message);
     }
   }
 

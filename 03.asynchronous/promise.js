@@ -69,5 +69,5 @@ run(
     return run(db, "DROP TABLE books");
   })
   .catch((error) => {
-    console.log("発生したエラー：", error.message);
+    console.error("発生したエラー：", error.message);
   });
