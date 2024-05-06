@@ -16,7 +16,7 @@ const nonexistingErrorDatabase = new sqlite3.Database(":memory:", () => {
           nonexistingErrorDatabase.all(
             "SELECT * FROM books",
             [],
-            (error, rows) => {
+            (unusedError, rows) => {
               console.log("取得したデータ:", rows);
               nonexistingErrorDatabase.run("DROP TABLE books");
             },
@@ -39,11 +39,11 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
         ["Rubyを知れば、Railsはもっと楽しくなる"],
         (error) => {
           if (error) {
-            console.log("発生したエラー:", error.message);
+            console.error("発生したエラー:", error.message);
           }
           existingErrorDatabase.all("SELECT * FROM games", [], (error) => {
             if (error) {
-              console.log("発生したエラー:", error.message);
+              console.error("発生したエラー:", error.message);
             }
             existingErrorDatabase.run("DROP TABLE books");
           });
