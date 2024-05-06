@@ -61,9 +61,15 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
         "Rubyを知れば、Railsはもっと楽しくなる",
       ]),
     )
+    .catch((error) => {
+      console.error("発生したエラー：", error.message);
+    })
     .then((result) => {
       console.log("追加したID:", result.lastID);
       return all(existingErrorDatabase, "SELECT * FROM books");
+    })
+    .catch((error) => {
+      console.error("発生したエラー：", error.message);
     })
     .then((rows) => {
       console.log("取得したデータ：", rows);
