@@ -33,13 +33,11 @@ const nonexistingErrorDatabase = new sqlite3.Database(":memory:", () => {
     nonexistingErrorDatabase,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(() => {
-      return run(
-        nonexistingErrorDatabase,
-        "INSERT INTO books (title) values(?)",
-        ["プロを目指す人のためのRuby入門"],
-      );
-    })
+    .then(() =>
+      run(nonexistingErrorDatabase, "INSERT INTO books(title) values(?)", [
+        "プロを目指す人のためのRuby入門",
+      ]),
+    )
     .then((result) => {
       console.log("追加したID:", result.lastID);
       return all(nonexistingErrorDatabase, "SELECT * FROM books");
@@ -58,13 +56,11 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
     existingErrorDatabase,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(() => {
-      return run(
-        existingErrorDatabase,
-        "INSERT INTO books (content) values(?)",
-        ["Rubyを知れば、Railsはもっと楽しくなる"],
-      );
-    })
+    .then(() =>
+      run(existingErrorDatabase, "INSERT INTO books (content) values(?)", [
+        "Rubyを知れば、Railsはもっと楽しくなる",
+      ]),
+    )
     .then((result) => {
       console.log("追加したID:", result.lastID);
       return all(existingErrorDatabase, "SELECT * FROM books");
