@@ -9,7 +9,7 @@ const nonexistingErrorDatabase = new sqlite3.Database(":memory:", () => {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
     () => {
       nonexistingErrorDatabase.run(
-        "INSERT INTO books(title) values(?)",
+        "INSERT INTO books (title) values(?)",
         ["プロを目指す人のためのRuby入門"],
         function () {
           console.log("追加したID:", this.lastID);
@@ -35,7 +35,7 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
     () => {
       existingErrorDatabase.run(
-        "INSERT INTO books(content) values(?)",
+        "INSERT INTO books (content) values(?)",
         ["Rubyを知れば、Railsはもっと楽しくなる"],
         (error) => {
           if (error) {
