@@ -33,7 +33,7 @@ async function sample(db) {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
 
-  const result = await run(db, "INSERT INTO books(title) values(?)", [
+  const result = await run(db, "INSERT INTO books (title) values(?)", [
     "プロを目指す人のためのRuby入門",
   ]);
   console.log("追加したID:", result.lastID);
@@ -51,7 +51,7 @@ async function sample2(db) {
   );
 
   try {
-    await run(db, "INSERT INTO books(content) values(?)", [
+    await run(db, "INSERT INTO books (content) values(?)", [
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]);
   } catch (error) {

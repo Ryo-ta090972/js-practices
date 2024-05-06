@@ -35,7 +35,7 @@ run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() => {
-    return run(db, "INSERT INTO books(title) values(?)", [
+    return run(db, "INSERT INTO books (title) values(?)", [
       "プロを目指す人のためのRuby入門",
     ]);
   })
@@ -56,7 +56,7 @@ run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() => {
-    return run(db, "INSERT INTO books(content) values(?)", [
+    return run(db, "INSERT INTO books (content) values(?)", [
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]);
   })
