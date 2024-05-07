@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import sqlite3 from "sqlite3";
-import { run, all } from "./promise.js";
+import { run, all } from "./common_functions.js";
 
 async function nonexistingErrorDatabase(db) {
   await run(
