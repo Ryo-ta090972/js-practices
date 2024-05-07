@@ -43,7 +43,7 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
     })
     .then((result) => {
       console.log("追加したID:", result.lastID);
-      return all(existingErrorDatabase, "SELECT * FROM books");
+      return all(existingErrorDatabase, "SELECT * FROM games");
     })
     .catch((error) => {
       console.error("発生したエラー：", error.message);
