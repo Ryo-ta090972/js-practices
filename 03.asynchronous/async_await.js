@@ -31,8 +31,10 @@ async function existingErrorDatabase(db) {
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]);
   } catch (error) {
-    if (error.code === "SQLITE_ERROR") {
+    if (error?.code === "SQLITE_ERROR") {
       console.error("発生したエラー:", error.message);
+    } else {
+      throw error;
     }
   }
 
@@ -40,8 +42,10 @@ async function existingErrorDatabase(db) {
     const rows = await all(db, "SELECT * FROM games");
     console.log("取得したデータ：", rows);
   } catch (error) {
-    if (error.code === "SQLITE_ERROR") {
+    if (error?.code === "SQLITE_ERROR") {
       console.error("発生したエラー:", error.message);
+    } else {
+      throw error;
     }
   }
 
