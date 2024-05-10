@@ -52,8 +52,4 @@ async function existingErrorDatabase(db) {
   await run(db, "DROP TABLE books");
 }
 
-const Database = new sqlite3.Database(":memory:", () => {
-  nonexistingErrorDatabase(Database).then(() =>
-    existingErrorDatabase(Database),
-  );
-});
+nonexistingErrorDatabase(Database).then(() => existingErrorDatabase(Database));
