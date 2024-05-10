@@ -14,7 +14,7 @@ database.run(
       ["プロを目指す人のためのRuby入門"],
       function () {
         console.log("追加したID:", this.lastID);
-        database.all("SELECT * FROM books", [], (unusedError, rows) => {
+        database.all("SELECT * FROM books", [], (_, rows) => {
           console.log("取得したデータ:", rows);
           database.run("DROP TABLE books");
         });
