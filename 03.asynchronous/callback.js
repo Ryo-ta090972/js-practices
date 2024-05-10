@@ -3,23 +3,21 @@
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 
+const database = new sqlite3.Database(":memory:");
+
 // エラー無し
-nonexistingErrorDatabase.run(
+database.run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
-    nonexistingErrorDatabase.run(
+    database.run(
       "INSERT INTO books (title) VALUES(?)",
       ["プロを目指す人のためのRuby入門"],
       function () {
         console.log("追加したID:", this.lastID);
-        nonexistingErrorDatabase.all(
-          "SELECT * FROM books",
-          [],
-          (unusedError, rows) => {
-            console.log("取得したデータ:", rows);
-            nonexistingErrorDatabase.run("DROP TABLE books");
-          },
-        );
+        database.all("SELECT * FROM books", [], (unusedError, rows) => {
+          console.log("取得したデータ:", rows);
+          database.run("DROP TABLE books");
+        });
       },
     );
   },
@@ -28,21 +26,21 @@ nonexistingErrorDatabase.run(
 await timers.setTimeout(100);
 
 // エラーあり
-existingErrorDatabase.run(
+database.run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
-    existingErrorDatabase.run(
+    database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       (error) => {
         if (error) {
           console.error("発生したエラー:", error.message);
         }
-        existingErrorDatabase.all("SELECT * FROM games", [], (error) => {
+        database.all("SELECT * FROM games", [], (error) => {
           if (error) {
             console.error("発生したエラー:", error.message);
           }
-          existingErrorDatabase.run("DROP TABLE books");
+          database.run("DROP TABLE books");
         });
       },
     );
