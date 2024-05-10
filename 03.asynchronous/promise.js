@@ -75,7 +75,4 @@ run(
   .then((rows) => {
     if (!(rows instanceof Error)) console.log("取得したデータ：", rows);
     return run(database, "DROP TABLE books");
-  })
-  .catch((error) => {
-    console.error("発生したエラー：", error.message);
   });
