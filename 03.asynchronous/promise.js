@@ -11,7 +11,7 @@ const nonexistingErrorDatabase = new sqlite3.Database(":memory:", () => {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
     .then(() =>
-      run(nonexistingErrorDatabase, "INSERT INTO books(title) values(?)", [
+      run(nonexistingErrorDatabase, "INSERT INTO books(title) VALUES(?)", [
         "プロを目指す人のためのRuby入門",
       ]),
     )
@@ -34,7 +34,7 @@ const existingErrorDatabase = new sqlite3.Database(":memory:", () => {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
     .then(() =>
-      run(existingErrorDatabase, "INSERT INTO books (content) values(?)", [
+      run(existingErrorDatabase, "INSERT INTO books (content) VALUES(?)", [
         "Rubyを知れば、Railsはもっと楽しくなる",
       ]),
     )

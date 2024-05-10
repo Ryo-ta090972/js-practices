@@ -9,7 +9,7 @@ async function nonexistingErrorDatabase(db) {
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
 
-  const result = await run(db, "INSERT INTO books (title) values(?)", [
+  const result = await run(db, "INSERT INTO books (title) VALUES(?)", [
     "プロを目指す人のためのRuby入門",
   ]);
   console.log("追加したID:", result.lastID);
@@ -27,7 +27,7 @@ async function existingErrorDatabase(db) {
   );
 
   try {
-    await run(db, "INSERT INTO books (content) values(?)", [
+    await run(db, "INSERT INTO books (content) VALUES(?)", [
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]);
   } catch (error) {
