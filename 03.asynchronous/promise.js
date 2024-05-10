@@ -45,7 +45,9 @@ run(
   })
   .then((rows) => {
     console.log("取得したデータ：", rows);
-    return run(database, "DROP TABLE books");
+  })
+  .finally(() => {
+    run(database, "DROP TABLE books");
   });
 
 await timers.setTimeout(100);
@@ -74,5 +76,7 @@ run(
   })
   .then((rows) => {
     if (!(rows instanceof Error)) console.log("取得したデータ：", rows);
-    return run(database, "DROP TABLE books");
+  })
+  .finally(() => {
+    run(database, "DROP TABLE books");
   });
