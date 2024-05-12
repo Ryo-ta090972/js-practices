@@ -33,11 +33,11 @@ database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       (result) => {
-        if (result) {
+        if (result instanceof Error && result.code === "SQLITE_ERROR") {
           console.error("発生したエラー:", result.message);
         }
         database.all("SELECT * FROM games", (error) => {
-          if (error) {
+          if (error instanceof Error && error.code === "SQLITE_ERROR") {
             console.error("発生したエラー:", error.message);
           }
           database.run("DROP TABLE books");
