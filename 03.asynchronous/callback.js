@@ -32,9 +32,9 @@ database.run(
     database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
-      (error) => {
-        if (error) {
-          console.error("発生したエラー:", error.message);
+      (result) => {
+        if (result) {
+          console.error("発生したエラー:", result.message);
         }
         database.all("SELECT * FROM games", (error) => {
           if (error) {
