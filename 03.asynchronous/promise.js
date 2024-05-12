@@ -63,20 +63,19 @@ run(
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]),
   )
+  .then((result) => {
+    console.log("追加したID:", result.lastID);
+    return all(database, "SELECT * FROM books");
+  })
   .catch((error) => {
     console.error("発生したエラー：", error.message);
-    return error;
-  })
-  .then((result) => {
-    if (!(result instanceof Error)) console.log("追加したID:", result.lastID);
     return all(database, "SELECT * FROM games");
   })
+  .then((rows) => {
+    console.log("取得したデータ：", rows);
+  })
   .catch((error) => {
     console.error("発生したエラー：", error.message);
-    return error;
-  })
-  .then((rows) => {
-    if (!(rows instanceof Error)) console.log("取得したデータ：", rows);
   })
   .finally(() => {
     run(database, "DROP TABLE books");
