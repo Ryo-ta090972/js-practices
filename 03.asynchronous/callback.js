@@ -32,13 +32,17 @@ database.run(
     database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
-      (result) => {
+      function (result) {
         if (result instanceof Error && result.code === "SQLITE_ERROR") {
           console.error("発生したエラー:", result.message);
+        } else {
+          console.log("追加したID:", this.lastID);
         }
-        database.all("SELECT * FROM games", (error) => {
+        database.all("SELECT * FROM games", (error, rows) => {
           if (error instanceof Error && error.code === "SQLITE_ERROR") {
             console.error("発生したエラー:", error.message);
+          } else {
+            console.log("取得したデータ:", rows);
           }
           database.run("DROP TABLE books");
         });
