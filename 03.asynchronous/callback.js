@@ -2,12 +2,9 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
+import { checkErrorOfSqlite } from "./check_error.js";
 
 const database = new sqlite3.Database(":memory:");
-
-function checkErrorOfSqlite(object) {
-  return object instanceof Error && object.code === "SQLITE_ERROR";
-}
 
 // エラー無し
 database.run(

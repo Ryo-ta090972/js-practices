@@ -2,13 +2,14 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
+import { checkErrorOfSqlite } from "./check_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
 function run(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function (error) {
-      if (error) {
+      if (checkErrorOfSqlite(error)) {
         reject(error);
       } else {
         resolve(this);
@@ -20,7 +21,7 @@ function run(db, sql, params = []) {
 function all(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.all(sql, params, (error, rows) => {
-      if (error) {
+      if (checkErrorOfSqlite(error)) {
         reject(error);
       } else {
         resolve(rows);
