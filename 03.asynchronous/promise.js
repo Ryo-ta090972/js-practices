@@ -6,11 +6,11 @@ import { checkErrorOfSqlite } from "./check_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
-function run(db, sql, params = []) {
+function run(database, sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.run(sql, params, function (error) {
-      if (checkErrorOfSqlite(error)) {
-        reject(error);
+    database.run(sql, params, function (result) {
+      if (checkErrorOfSqlite(result)) {
+        reject(result);
       } else {
         resolve(this);
       }
@@ -18,9 +18,9 @@ function run(db, sql, params = []) {
   });
 }
 
-function all(db, sql, params = []) {
+function all(database, sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.all(sql, params, (error, rows) => {
+    database.all(sql, params, (error, rows) => {
       if (checkErrorOfSqlite(error)) {
         reject(error);
       } else {
