@@ -3,7 +3,7 @@
 import sqlite3 from "sqlite3";
 import {
   runWithPromise,
-  allWitPromise,
+  allWithPromise,
 } from "./sqlite_function_with_promise.js";
 import { handleDatabaseError } from "./handle_error.js";
 
@@ -22,7 +22,7 @@ async function databaseWithNoExistingError(database) {
   );
   console.log("追加したID:", inserted_content.lastID);
 
-  const rows = await allWitPromise(database, "SELECT * FROM books");
+  const rows = await allWithPromise(database, "SELECT * FROM books");
   console.log("取得したデータ：", rows);
 
   await runWithPromise(database, "DROP TABLE books");
@@ -46,7 +46,7 @@ async function databaseWithExistingError(database) {
   }
 
   try {
-    const rows = await allWitPromise(database, "SELECT * FROM games");
+    const rows = await allWithPromise(database, "SELECT * FROM games");
     console.log("取得したデータ：", rows);
   } catch (error) {
     handleDatabaseError(error);

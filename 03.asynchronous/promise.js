@@ -4,7 +4,7 @@ import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 import {
   runWithPromise,
-  allWitPromise,
+  allWithPromise,
 } from "./sqlite_function_with_promise.js";
 import { handleDatabaseError } from "./handle_error.js";
 
@@ -22,7 +22,7 @@ runWithPromise(
   )
   .then((result) => {
     console.log("追加したID:", result.lastID);
-    return allWitPromise(database, "SELECT * FROM books");
+    return allWithPromise(database, "SELECT * FROM books");
   })
   .then((rows) => {
     console.log("取得したデータ：", rows);
@@ -45,11 +45,11 @@ runWithPromise(
   )
   .then((result) => {
     console.log("追加したID:", result.lastID);
-    return allWitPromise(database, "SELECT * FROM books");
+    return allWithPromise(database, "SELECT * FROM books");
   })
   .catch((error) => {
     handleDatabaseError(error);
-    return allWitPromise(database, "SELECT * FROM games");
+    return allWithPromise(database, "SELECT * FROM games");
   })
   .then((rows) => {
     console.log("取得したデータ：", rows);

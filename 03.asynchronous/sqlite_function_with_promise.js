@@ -10,7 +10,7 @@ export function runWithPromise(database, sql, params = []) {
   });
 }
 
-export function allWitPromise(database, sql, params = []) {
+export function allWithPromise(database, sql, params = []) {
   return new Promise((resolve, reject) => {
     database.all(sql, params, (error, rows) => {
       if (error) {
