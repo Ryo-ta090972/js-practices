@@ -5,16 +5,18 @@ import { run, all } from "./sqlite_function_with_promise.js";
 
 const database = new sqlite3.Database(":memory:");
 
-async function nonexistingErrorDatabase(database) {
+async function databaseWithNoExistingError(database) {
   await run(
     database,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
 
-  const result = await run(database, "INSERT INTO books (title) VALUES(?)", [
-    "プロを目指す人のためのRuby入門",
-  ]);
-  console.log("追加したID:", result.lastID);
+  const inserted_content = await run(
+    database,
+    "INSERT INTO books (title) VALUES(?)",
+    ["プロを目指す人のためのRuby入門"],
+  );
+  console.log("追加したID:", inserted_content.lastID);
 
   const rows = await all(database, "SELECT * FROM books");
   console.log("取得したデータ：", rows);
@@ -22,7 +24,7 @@ async function nonexistingErrorDatabase(database) {
   await run(database, "DROP TABLE books");
 }
 
-async function existingErrorDatabase(database) {
+async function databaseWithExistingError(database) {
   await run(
     database,
     "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
@@ -57,4 +59,6 @@ async function existingErrorDatabase(database) {
   await run(database, "DROP TABLE books");
 }
 
-nonexistingErrorDatabase(database).then(() => existingErrorDatabase(database));
+databaseWithNoExistingError(database).then(() =>
+  databaseWithExistingError(database),
+);
