@@ -52,6 +52,9 @@ async function databaseWithExistingError(database) {
   await run(database, "DROP TABLE books");
 }
 
-databaseWithNoExistingError(database).then(() =>
-  databaseWithExistingError(database),
-);
+async function main(database) {
+  await databaseWithNoExistingError(database);
+  await databaseWithExistingError(database);
+}
+
+main(database);
