@@ -34,7 +34,7 @@ database.run(
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       function (result) {
         if (result instanceof Error) {
-          if (result === "SQLITE_ERROR")
+          if (result.code === "SQLITE_ERROR")
             console.error("捕捉したいエラー:", result.message);
           else {
             console.error("その他のエラー", result.message);
@@ -44,7 +44,7 @@ database.run(
         }
         database.all("SELECT * FROM games", (error, rows) => {
           if (error instanceof Error) {
-            if (error === "SQLITE_ERROR")
+            if (error.code === "SQLITE_ERROR")
               console.error("捕捉したいエラー:", error.message);
             else {
               console.error("その他のエラー", error.message);
