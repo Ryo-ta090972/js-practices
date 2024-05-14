@@ -2,6 +2,7 @@
 
 import sqlite3 from "sqlite3";
 import { run, all } from "./sqlite_function_with_promise.js";
+import { handleDatabaseError } from "./handle_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
@@ -38,22 +39,14 @@ async function databaseWithExistingError(database) {
     );
     console.log("追加したID:", inserted_content.lastID);
   } catch (error) {
-    if (error?.code === "SQLITE_ERROR") {
-      console.error("発生したエラー:", error.message);
-    } else {
-      throw error;
-    }
+    handleDatabaseError(error);
   }
 
   try {
     const rows = await all(database, "SELECT * FROM games");
     console.log("取得したデータ：", rows);
   } catch (error) {
-    if (error?.code === "SQLITE_ERROR") {
-      console.error("発生したエラー:", error.message);
-    } else {
-      throw error;
-    }
+    handleDatabaseError(error);
   }
 
   await run(database, "DROP TABLE books");

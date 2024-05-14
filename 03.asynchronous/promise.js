@@ -3,6 +3,7 @@
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 import { run, all } from "./sqlite_function_with_promise.js";
+import { handleDatabaseError } from "./handle_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
@@ -44,14 +45,14 @@ run(
     return all(database, "SELECT * FROM books");
   })
   .catch((error) => {
-    console.error("発生したエラー：", error.message);
+    handleDatabaseError(error);
     return all(database, "SELECT * FROM games");
   })
   .then((rows) => {
     console.log("取得したデータ：", rows);
   })
   .catch((error) => {
-    console.error("発生したエラー：", error.message);
+    handleDatabaseError(error);
   })
   .finally(() => {
     run(database, "DROP TABLE books");
