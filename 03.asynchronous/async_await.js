@@ -29,9 +29,12 @@ async function existingErrorDatabase(database) {
   );
 
   try {
-    await run(database, "INSERT INTO books (content) VALUES(?)", [
-      "Rubyを知れば、Railsはもっと楽しくなる",
-    ]);
+    const inserted_content = await run(
+      database,
+      "INSERT INTO books (content) VALUES(?)",
+      ["Rubyを知れば、Railsはもっと楽しくなる"],
+    );
+    console.log("追加したID:", inserted_content.lastID);
   } catch (error) {
     if (error?.code === "SQLITE_ERROR") {
       console.error("発生したエラー:", error.message);
