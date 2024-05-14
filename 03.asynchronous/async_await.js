@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import sqlite3 from "sqlite3";
-import { checkErrorOfSqlite } from "./check_error.js";
+import { run, all } from "./sqlite_function_with_promise.js";
 
 const database = new sqlite3.Database(":memory:");
 
