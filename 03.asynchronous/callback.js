@@ -2,7 +2,6 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
-import { checkErrorOfSqlite } from "./check_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
@@ -34,14 +33,22 @@ database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       function (result) {
-        if (checkErrorOfSqlite(result)) {
-          console.error("発生したエラー:", result.message);
+        if (result instanceof Error) {
+          if (result === "SQLITE_ERROR")
+            console.error("捕捉したいエラー:", result.message);
+          else {
+            console.error("その他のエラー", result.message);
+          }
         } else {
           console.log("追加したID:", this.lastID);
         }
         database.all("SELECT * FROM games", (error, rows) => {
-          if (checkErrorOfSqlite(error)) {
-            console.error("発生したエラー:", error.message);
+          if (error instanceof Error) {
+            if (error === "SQLITE_ERROR")
+              console.error("捕捉したいエラー:", error.message);
+            else {
+              console.error("その他のエラー", error.message);
+            }
           } else {
             console.log("取得したデータ:", rows);
           }
