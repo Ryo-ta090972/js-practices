@@ -10,7 +10,7 @@ database.run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
     database.run(
-      "INSERT INTO books (title) VALUES(?)",
+      "INSERT INTO books (title) VALUES (?)",
       ["プロを目指す人のためのRuby入門"],
       function () {
         console.log("追加したID:", this.lastID);
@@ -30,7 +30,7 @@ database.run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
     database.run(
-      "INSERT INTO books (content) VALUES(?)",
+      "INSERT INTO books (content) VALUES (?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       function (error) {
         if (error instanceof Error) {

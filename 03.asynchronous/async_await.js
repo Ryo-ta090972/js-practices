@@ -17,7 +17,7 @@ async function databaseWithNoExistingError(database) {
 
   const insertedBook = await runWithPromise(
     database,
-    "INSERT INTO books (title) VALUES(?)",
+    "INSERT INTO books (title) VALUES (?)",
     ["プロを目指す人のためのRuby入門"],
   );
   console.log("追加したID:", insertedBook.lastID);
@@ -37,7 +37,7 @@ async function databaseWithExistingError(database) {
   try {
     const insertedBook = await runWithPromise(
       database,
-      "INSERT INTO books (content) VALUES(?)",
+      "INSERT INTO books (content) VALUES (?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
     );
     console.log("追加したID:", insertedBook.lastID);

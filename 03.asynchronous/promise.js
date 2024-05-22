@@ -16,7 +16,7 @@ runWithPromise(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() =>
-    runWithPromise(database, "INSERT INTO books (title) VALUES(?)", [
+    runWithPromise(database, "INSERT INTO books (title) VALUES (?)", [
       "プロを目指す人のためのRuby入門",
     ]),
   )
@@ -39,7 +39,7 @@ runWithPromise(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() =>
-    runWithPromise(database, "INSERT INTO books (content) VALUES(?)", [
+    runWithPromise(database, "INSERT INTO books (content) VALUES (?)", [
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]),
   )
