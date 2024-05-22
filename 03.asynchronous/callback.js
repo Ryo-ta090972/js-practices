@@ -34,21 +34,13 @@ database.run(
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       function (error) {
         if (error instanceof Error) {
-          if (error.code === "SQLITE_ERROR")
-            console.error("捕捉したいエラー:", error.message);
-          else {
-            console.error("その他のエラー", error.message);
-          }
+          console.error("発生したエラー:", error.message);
         } else {
           console.log("追加したID:", this.lastID);
         }
         database.all("SELECT * FROM games", (error, selectedGames) => {
           if (error instanceof Error) {
-            if (error.code === "SQLITE_ERROR")
-              console.error("捕捉したいエラー:", error.message);
-            else {
-              console.error("その他のエラー", error.message);
-            }
+            console.error("発生したエラー:", error.message);
           } else {
             console.log("取得したデータ:", selectedGames);
           }
