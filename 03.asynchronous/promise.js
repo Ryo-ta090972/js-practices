@@ -27,7 +27,7 @@ runWithPromise(
   .then((selectedBooks) => {
     console.log("取得したデータ：", selectedBooks);
   })
-  .finally(() => {
+  .then(() => {
     runWithPromise(database, "DROP TABLE books");
   });
 
@@ -57,6 +57,6 @@ runWithPromise(
   .catch((error) => {
     handleDatabaseError(error);
   })
-  .finally(() => {
+  .then(() => {
     runWithPromise(database, "DROP TABLE books");
   });
