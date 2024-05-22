@@ -14,8 +14,8 @@ database.run(
       ["プロを目指す人のためのRuby入門"],
       function () {
         console.log("追加したID:", this.lastID);
-        database.all("SELECT * FROM books", (_, rows) => {
-          console.log("取得したデータ:", rows);
+        database.all("SELECT * FROM books", (_, selectedBooks) => {
+          console.log("取得したデータ:", selectedBooks);
           database.run("DROP TABLE books");
         });
       },
@@ -32,17 +32,17 @@ database.run(
     database.run(
       "INSERT INTO books (content) VALUES(?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
-      function (result) {
-        if (result instanceof Error) {
-          if (result.code === "SQLITE_ERROR")
-            console.error("捕捉したいエラー:", result.message);
+      function (error) {
+        if (error instanceof Error) {
+          if (error.code === "SQLITE_ERROR")
+            console.error("捕捉したいエラー:", error.message);
           else {
-            console.error("その他のエラー", result.message);
+            console.error("その他のエラー", error.message);
           }
         } else {
           console.log("追加したID:", this.lastID);
         }
-        database.all("SELECT * FROM games", (error, rows) => {
+        database.all("SELECT * FROM games", (error, selectedGames) => {
           if (error instanceof Error) {
             if (error.code === "SQLITE_ERROR")
               console.error("捕捉したいエラー:", error.message);
@@ -50,7 +50,7 @@ database.run(
               console.error("その他のエラー", error.message);
             }
           } else {
-            console.log("取得したデータ:", rows);
+            console.log("取得したデータ:", selectedGames);
           }
           database.run("DROP TABLE books");
         });

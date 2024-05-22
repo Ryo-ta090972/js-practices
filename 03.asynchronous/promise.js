@@ -5,7 +5,7 @@ import sqlite3 from "sqlite3";
 import {
   runWithPromise,
   allWithPromise,
-} from "./sqlite_function_with_promise.js";
+} from "./sqlite_functions_with_promise.js";
 import { handleDatabaseError } from "./handle_error.js";
 
 const database = new sqlite3.Database(":memory:");
@@ -20,12 +20,12 @@ runWithPromise(
       "プロを目指す人のためのRuby入門",
     ]),
   )
-  .then((result) => {
-    console.log("追加したID:", result.lastID);
+  .then((insertedBook) => {
+    console.log("追加したID:", insertedBook.lastID);
     return allWithPromise(database, "SELECT * FROM books");
   })
-  .then((rows) => {
-    console.log("取得したデータ：", rows);
+  .then((selectedBooks) => {
+    console.log("取得したデータ：", selectedBooks);
   })
   .finally(() => {
     runWithPromise(database, "DROP TABLE books");
@@ -43,16 +43,16 @@ runWithPromise(
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]),
   )
-  .then((result) => {
-    console.log("追加したID:", result.lastID);
-    return allWithPromise(database, "SELECT * FROM books");
+  .then((insertedBook) => {
+    console.log("追加したID:", insertedBook.lastID);
+    return allWithPromise(database, "SELECT * FROM games");
   })
   .catch((error) => {
     handleDatabaseError(error);
     return allWithPromise(database, "SELECT * FROM games");
   })
-  .then((rows) => {
-    console.log("取得したデータ：", rows);
+  .then((selectedGames) => {
+    console.log("取得したデータ：", selectedGames);
   })
   .catch((error) => {
     handleDatabaseError(error);
