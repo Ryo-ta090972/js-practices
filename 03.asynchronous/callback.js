@@ -33,13 +33,13 @@ database.run(
       "INSERT INTO books (content) VALUES (?)",
       ["Rubyを知れば、Railsはもっと楽しくなる"],
       function (error) {
-        if (error instanceof Error) {
+        if (error) {
           console.error("発生したエラー:", error.message);
         } else {
           console.log("追加したID:", this.lastID);
         }
         database.all("SELECT * FROM games", (error, rowsOfGames) => {
-          if (error instanceof Error) {
+          if (error) {
             console.error("発生したエラー:", error.message);
           } else {
             console.log("取得したデータ:", rowsOfGames);
