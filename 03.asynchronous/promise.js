@@ -20,14 +20,12 @@ runWithPromise(
       "プロを目指す人のためのRuby入門",
     ]),
   )
-  .then((insertedBook) => {
-    console.log("追加したID:", insertedBook.lastID);
+  .then((statement) => {
+    console.log("追加したID:", statement.lastID);
     return allWithPromise(database, "SELECT * FROM books");
   })
-  .then((selectedBooks) => {
-    console.log("取得したデータ：", selectedBooks);
-  })
-  .then(() => {
+  .then((rowsOfBooksTable) => {
+    console.log("取得したデータ：", rowsOfBooksTable);
     runWithPromise(database, "DROP TABLE books");
   });
 
@@ -43,20 +41,19 @@ runWithPromise(
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]),
   )
-  .then((insertedBook) => {
-    console.log("追加したID:", insertedBook.lastID);
+  .then((statement) => {
+    console.log("追加したID:", statement.lastID);
     return allWithPromise(database, "SELECT * FROM games");
   })
   .catch((error) => {
     handleDatabaseError(error);
     return allWithPromise(database, "SELECT * FROM games");
   })
-  .then((selectedGames) => {
-    console.log("取得したデータ：", selectedGames);
+  .then((rowsOfGamesTable) => {
+    console.log("取得したデータ：", rowsOfGamesTable);
+    runWithPromise(database, "DROP TABLE books");
   })
   .catch((error) => {
     handleDatabaseError(error);
-  })
-  .then(() => {
     runWithPromise(database, "DROP TABLE books");
   });
