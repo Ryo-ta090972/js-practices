@@ -39,15 +39,19 @@ runWithPromise(
   .then(() =>
     runWithPromise(database, "INSERT INTO books (content) VALUES (?)", [
       "Rubyを知れば、Railsはもっと楽しくなる",
-    ])
-      .then((statement) => console.log("追加したID:", statement.lastID))
-      .catch((error) => handleDatabaseError(error)),
+    ]),
   )
-  .then(() =>
-    allWithPromise(database, "SELECT * FROM games")
-      .then((rowsOfGamesTable) =>
-        console.log("取得したデータ：", rowsOfGamesTable),
-      )
-      .catch((error) => handleDatabaseError(error)),
-  )
-  .then(() => runWithPromise(database, "DROP TABLE books"));
+  .catch((error) => {
+    handleDatabaseError(error);
+  })
+  .then((statement) => {
+    if (statement) console.log("追加したID:", statement.lastID);
+    return allWithPromise(database, "SELECT * FROM games");
+  })
+  .catch((error) => {
+    handleDatabaseError(error);
+  })
+  .then((rowsOfGamesTable) => {
+    if (rowsOfGamesTable) console.log("取得したデータ：", rowsOfGamesTable);
+    runWithPromise(database, "DROP TABLE books");
+  });
