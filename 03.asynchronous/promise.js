@@ -41,17 +41,17 @@ runWithPromise(
       "Rubyを知れば、Railsはもっと楽しくなる",
     ]),
   )
-  .catch((error) => {
-    handleDatabaseError(error);
-  })
   .then((statement) => {
-    if (statement) console.log("追加したID:", statement.lastID);
-    return allWithPromise(database, "SELECT * FROM games");
+    console.log("追加したID:", statement.lastID);
   })
   .catch((error) => {
     handleDatabaseError(error);
   })
+  .then(() => allWithPromise(database, "SELECT * FROM games"))
   .then((rows) => {
-    if (rows) console.log("取得したデータ：", rows);
-    runWithPromise(database, "DROP TABLE books");
-  });
+    console.log("取得したデータ：", rows);
+  })
+  .catch((error) => {
+    handleDatabaseError(error);
+  })
+  .then(() => runWithPromise(database, "DROP TABLE books"));
