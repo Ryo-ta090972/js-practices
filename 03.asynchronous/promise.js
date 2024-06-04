@@ -24,8 +24,8 @@ runWithPromise(
     console.log("追加したID:", statement.lastID);
     return allWithPromise(database, "SELECT * FROM books");
   })
-  .then((rowsOfBooksTable) => {
-    console.log("取得したデータ：", rowsOfBooksTable);
+  .then((rows) => {
+    console.log("取得したデータ：", rows);
     runWithPromise(database, "DROP TABLE books");
   });
 
@@ -51,7 +51,7 @@ runWithPromise(
   .catch((error) => {
     handleDatabaseError(error);
   })
-  .then((rowsOfGamesTable) => {
-    if (rowsOfGamesTable) console.log("取得したデータ：", rowsOfGamesTable);
+  .then((rows) => {
+    if (rows) console.log("取得したデータ：", rows);
     runWithPromise(database, "DROP TABLE books");
   });

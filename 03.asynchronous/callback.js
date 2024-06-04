@@ -14,8 +14,8 @@ database.run(
       ["プロを目指す人のためのRuby入門"],
       function () {
         console.log("追加したID:", this.lastID);
-        database.all("SELECT * FROM books", (_, rowsOfBooksTable) => {
-          console.log("取得したデータ:", rowsOfBooksTable);
+        database.all("SELECT * FROM books", (_, rows) => {
+          console.log("取得したデータ:", rows);
           database.run("DROP TABLE books");
         });
       },
@@ -38,11 +38,11 @@ database.run(
         } else {
           console.log("追加したID:", this.lastID);
         }
-        database.all("SELECT * FROM games", (error, rowsOfGamesTable) => {
+        database.all("SELECT * FROM games", (error, rows) => {
           if (error) {
             console.error("発生したエラー:", error.message);
           } else {
-            console.log("取得したデータ:", rowsOfGamesTable);
+            console.log("取得したデータ:", rows);
           }
           database.run("DROP TABLE books");
         });

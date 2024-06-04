@@ -22,8 +22,8 @@ const statement = await runWithPromise(
 );
 console.log("追加したID:", statement.lastID);
 
-const rowsOfBooksTable = await allWithPromise(database, "SELECT * FROM books");
-console.log("取得したデータ：", rowsOfBooksTable);
+const rows = await allWithPromise(database, "SELECT * FROM books");
+console.log("取得したデータ：", rows);
 
 await runWithPromise(database, "DROP TABLE books");
 
@@ -45,11 +45,8 @@ try {
 }
 
 try {
-  const rowsOfGamesTable = await allWithPromise(
-    database,
-    "SELECT * FROM games",
-  );
-  console.log("取得したデータ：", rowsOfGamesTable);
+  const rows = await allWithPromise(database, "SELECT * FROM games");
+  console.log("取得したデータ：", rows);
 } catch (error) {
   handleDatabaseError(error);
 }
