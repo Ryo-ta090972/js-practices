@@ -6,7 +6,7 @@ import {
   runWithPromise,
   allWithPromise,
 } from "./sqlite_functions_with_promise.js";
-import { handleDatabaseError } from "./handle_error.js";
+import { handleDatabaseError } from "./handle_database_error.js";
 
 const database = new sqlite3.Database(":memory:");
 
