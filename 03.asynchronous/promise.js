@@ -26,7 +26,7 @@ runWithPromise(
   })
   .then((rows) => {
     console.log("取得したデータ：", rows);
-    runWithPromise(database, "DROP TABLE books");
+    return runWithPromise(database, "DROP TABLE books");
   });
 
 await timers.setTimeout(100);
