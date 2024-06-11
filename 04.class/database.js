@@ -42,4 +42,17 @@ export class Database {
       });
     });
   }
+
+  async isTable(tableName) {
+    const response = await this.fetchRow(
+      `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ( ? )`,
+      tableName,
+    );
+
+    if (typeof response === "undefined") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
