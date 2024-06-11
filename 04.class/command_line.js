@@ -11,6 +11,16 @@ export class CommandLine {
     return this.#program.opts();
   }
 
+  isMultipleOptions() {
+    const number = Object.keys(this.options).length;
+
+    if (number >= 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   isOption() {
     const number = Object.keys(this.options).length;
 
