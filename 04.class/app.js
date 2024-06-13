@@ -1,19 +1,18 @@
 import { Database } from "./database.js";
 import { CommandLine } from "./command_line.js";
-import { MemoManager } from "./memo_manager.js";
-import { MemoDetail } from "./memo_detail.js";
+import { MemosManager } from "./memos_manager.js";
 import { UserInput } from "./user_input.js";
 
 export class App {
   #commandLine;
   #database;
-  #memoManager;
+  #memosManager;
   #userInput;
 
   constructor() {
     this.#commandLine = new CommandLine();
     this.#database = new Database("./memo.sqlite3");
-    this.#memoManager = new MemoManager(this.#database);
+    this.#memosManager = new MemosManager(this.#database);
     this.#userInput = new UserInput();
   }
 
@@ -35,11 +34,10 @@ export class App {
   }
 
   async #runEnquirer() {
-    const memos = await this.#memoManager.fetchAll();
-    const choices = this.#buildChoices(memos);
+    const choices = this.#memosManager.buildChoices();
 
     if (this.#commandLine.options["list"]) {
-      this.#handleListOption(memos);
+      this.#handleListOption();
     } else if (this.#commandLine.options["read"]) {
       await this.#handleReadOption(choices);
     } else if (this.#commandLine.options["delete"]) {
@@ -49,11 +47,11 @@ export class App {
 
   async #createNewMemo() {
     const newMemo = await this.#userInput.runReadline();
-    await this.#memoManager.add(newMemo);
+    await this.#memosManager.add(newMemo);
   }
 
-  #handleListOption(memos) {
-    const firstRows = this.#fetchFirstRows(memos);
+  async #handleListOption() {
+    const firstRows = await this.#memosManager.fetchFirstRows();
     console.log(firstRows.join("\n"));
   }
 
@@ -63,7 +61,7 @@ export class App {
       choices: choices,
     });
 
-    const memo = await this.#memoManager.fetch(id);
+    const memo = await this.#memosManager.fetch(id);
     console.log(memo.content);
   }
 
@@ -73,38 +71,6 @@ export class App {
       choices: choices,
     });
 
-    await this.#memoManager.delete(id);
-  }
-
-  #fetchFirstRows(memos) {
-    const firstRows = [];
-    const memoDetails = this.#buildMemoDetails(memos);
-
-    memoDetails.forEach((memoDetail) => {
-      firstRows.push(memoDetail.firstRow);
-    });
-
-    return firstRows;
-  }
-
-  #buildChoices(memos) {
-    const choices = [];
-    const memoDetails = this.#buildMemoDetails(memos);
-
-    memoDetails.forEach((memoDetail) => {
-      choices.push({ name: memoDetail.id, message: memoDetail.firstRow });
-    });
-
-    return choices;
-  }
-
-  #buildMemoDetails(memos) {
-    const memoDetails = [];
-
-    memos.forEach((memo) => {
-      memoDetails.push(new MemoDetail(memo.id, memo.content));
-    });
-
-    return memoDetails;
+    await this.#memosManager.delete(id);
   }
 }
