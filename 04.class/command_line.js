@@ -11,13 +11,9 @@ export class CommandLine {
     return this.#program.opts();
   }
 
-  isMultipleOptions() {
-    const number = Object.keys(this.options).length;
-
-    if (number >= 2) {
-      return true;
-    } else {
-      return false;
+  ensureSingleOption() {
+    if (this.#isMultipleOptions()) {
+      throw new Error("オプションは複数指定できません。");
     }
   }
 
@@ -37,5 +33,15 @@ export class CommandLine {
       .option("-r, --read", "選んだメモの全行を表示する")
       .option("-d, --delete", "選んだメモを削除する")
       .parse();
+  }
+
+  #isMultipleOptions() {
+    const number = Object.keys(this.options).length;
+
+    if (number >= 2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

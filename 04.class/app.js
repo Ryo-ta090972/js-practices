@@ -18,27 +18,9 @@ export class App {
   }
 
   async run() {
-    this.#ensureSingleOption();
-    await this.#createTableIfNotExist();
+    this.#commandLine.ensureSingleOption();
+    await this.#database.createMemosTableIfNotExist();
     await this.#runUserInput();
-  }
-
-  #ensureSingleOption() {
-    const isMultipleOptions = this.#commandLine.isMultipleOptions();
-
-    if (isMultipleOptions) {
-      throw new Error("オプションは複数指定できません。");
-    }
-  }
-
-  async #createTableIfNotExist() {
-    const isTable = this.#database.isTable("memos");
-
-    if (!isTable) {
-      await this.#database.update(
-        "CREATE TABLE memos ( id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL )",
-      );
-    }
   }
 
   async #runUserInput() {
