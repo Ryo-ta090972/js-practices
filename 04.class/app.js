@@ -19,7 +19,10 @@ export class App {
 
   async run() {
     this.#commandLine.ensureSingleOption();
-    await this.#database.createMemosTableIfNotExist();
+    await this.#database.createTableIfNotExist(
+      "memos",
+      "id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL",
+    );
     await this.#runUserInput();
   }
 
@@ -46,11 +49,7 @@ export class App {
 
   async #createNewMemo() {
     const newMemo = await this.#userInput.runReadline();
-
-    return await this.#database.update(
-      "INSERT INTO memos ( content ) VALUES ( ? )",
-      newMemo,
-    );
+    await this.#memoManager.add(newMemo);
   }
 
   #handleListOption(memos) {

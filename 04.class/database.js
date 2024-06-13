@@ -43,16 +43,24 @@ export class Database {
     });
   }
 
-  async isTable(tableName) {
+  async createTableIfNotExist(tableName, column) {
+    const isNotTable = await this.#isNotTable(tableName);
+
+    if (isNotTable) {
+      await this.update(`CREATE TABLE ${tableName} ( ${column} )`);
+    }
+  }
+
+  async #isNotTable(tableName) {
     const response = await this.fetchRow(
-      `SELECT name FROM sqlite_master WHERE type = 'table' AND name = ( ? )`,
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ( ? )",
       tableName,
     );
 
     if (typeof response === "undefined") {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 }
