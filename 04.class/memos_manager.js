@@ -7,25 +7,21 @@ export class MemosManager {
     this.#database = database;
   }
 
-  async add(memo) {
+  async addMemo(memo) {
     return await this.#database.update(
       "INSERT INTO memos ( content ) VALUES ( ? )",
       memo,
     );
   }
 
-  async fetch(id) {
+  async fetchMemo(id) {
     return await this.#database.fetchRow(
       `SELECT content FROM memos WHERE id = ? `,
       id,
     );
   }
 
-  async fetchAll() {
-    return await this.#database.fetchAllRows("SELECT * FROM memos");
-  }
-
-  async delete(id) {
+  async deleteMemo(id) {
     return await this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
   }
 
@@ -51,9 +47,13 @@ export class MemosManager {
     return choices;
   }
 
+  async #fetchAllMemos() {
+    return await this.#database.fetchAllRows("SELECT * FROM memos");
+  }
+
   async #buildMemoDetails() {
     const memoDetails = [];
-    const memos = await this.fetchAll();
+    const memos = await this.#fetchAllMemos();
 
     memos.forEach((memo) => {
       memoDetails.push(new MemoDetail(memo.id, memo.content));

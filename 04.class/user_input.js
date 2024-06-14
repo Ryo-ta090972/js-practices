@@ -9,7 +9,7 @@ export class UserInput {
     this.#prompt = prompt;
   }
 
-  async runEnquirerOfSelect({ message, limit = 3, choices }) {
+  async runEnquirerOfSelect({ message, limit = 5, choices }) {
     const response = await this.#prompt({
       type: "select",
       name: "id",
@@ -22,11 +22,11 @@ export class UserInput {
   }
 
   async runReadline() {
-    const newMemos = await this.#fetchReadline();
+    const newMemos = await this.#acceptUserInput();
     return newMemos.join("\n");
   }
 
-  #fetchReadline() {
+  #acceptUserInput() {
     const memos = [];
     const rl = readline.createInterface({
       input: process.stdin,
