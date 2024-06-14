@@ -23,7 +23,7 @@ export class App {
       "memos",
       "id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL",
     );
-    await this.#executeActionForOption();
+    this.#executeActionForOption();
   }
 
   async #executeActionForOption() {
@@ -34,13 +34,13 @@ export class App {
     const choices = this.#memosManager.fetchChoices();
 
     if (isListOption) {
-      await this.#outputFirstRowsOfMemos();
+      this.#outputFirstRowsOfMemos();
     } else if (isReadOption) {
-      await this.#selectAndOutputMemo(choices);
+      this.#selectAndOutputMemo(choices);
     } else if (isDeleteOption) {
-      await this.#selectAndDeleteMemo(choices);
+      this.#selectAndDeleteMemo(choices);
     } else if (isNotOption) {
-      await this.#createNewMemo();
+      this.#createNewMemo();
     }
   }
 
@@ -67,11 +67,11 @@ export class App {
   async #selectAndDeleteMemo(choices) {
     const message = "Choose a memo you want to delete:";
     const id = await this.#selectMemo(message, choices);
-    await this.#memosManager.deleteMemo(id);
+    this.#memosManager.deleteMemo(id);
   }
 
   async #selectMemo(message, choices) {
-    return await this.#userInput.runEnquirerOfSelect({
+    return this.#userInput.runEnquirerOfSelect({
       message: message,
       choices: choices,
     });
@@ -79,6 +79,6 @@ export class App {
 
   async #createNewMemo() {
     const newMemo = await this.#userInput.runReadline();
-    await this.#memosManager.addMemo(newMemo);
+    this.#memosManager.addMemo(newMemo);
   }
 }

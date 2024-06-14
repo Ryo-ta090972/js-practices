@@ -49,7 +49,7 @@ export class Database {
       const isNotTable = await this.#isNotTable(tableName);
 
       if (isNotTable) {
-        await this.update(`CREATE TABLE ${tableName} ( ${column} )`);
+        this.update(`CREATE TABLE ${tableName} ( ${column} )`);
       }
     } catch (error) {
       handleSqliteGeneralError(error);

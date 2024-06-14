@@ -13,7 +13,7 @@ export class MemosManager {
 
   async addMemo(memo) {
     try {
-      return await this.#database.update(
+      return this.#database.update(
         "INSERT INTO memos ( content ) VALUES ( ? )",
         memo,
       );
@@ -24,7 +24,7 @@ export class MemosManager {
 
   async fetchMemo(id) {
     try {
-      return await this.#database.fetchRow(
+      return this.#database.fetchRow(
         `SELECT content FROM memos WHERE id = ? `,
         id,
       );
@@ -35,7 +35,7 @@ export class MemosManager {
 
   async deleteMemo(id) {
     try {
-      return await this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
+      return this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
     } catch (error) {
       handleSqliteGeneralError(error);
     }
@@ -65,7 +65,7 @@ export class MemosManager {
 
   async #fetchAllMemos() {
     try {
-      return await this.#database.fetchAllRows("SELECT * FROM memos");
+      return this.#database.fetchAllRows("SELECT * FROM memos");
     } catch (error) {
       handleSqliteGeneralError(error);
     }
