@@ -1,5 +1,6 @@
 import * as readline from "node:readline";
 import enquirer from "enquirer";
+import { handleEnquirerError, handleGeneralError } from "./handle_error.js";
 
 export class UserInput {
   #prompt;
@@ -10,20 +11,28 @@ export class UserInput {
   }
 
   async runEnquirerOfSelect({ message, limit = 5, choices }) {
-    const response = await this.#prompt({
-      type: "select",
-      name: "id",
-      message: message,
-      limit: limit,
-      choices: choices,
-    });
+    try {
+      const response = await this.#prompt({
+        type: "select",
+        name: "id",
+        message: message,
+        limit: limit,
+        choices: choices,
+      });
 
-    return response.id;
+      return response.id;
+    } catch (error) {
+      handleEnquirerError(error);
+    }
   }
 
   async runReadline() {
-    const newMemos = await this.#acceptUserInput();
-    return newMemos.join("\n");
+    try {
+      const newMemos = await this.#acceptUserInput();
+      return newMemos.join("\n");
+    } catch (error) {
+      handleGeneralError(error);
+    }
   }
 
   #acceptUserInput() {
@@ -46,8 +55,8 @@ export class UserInput {
         resolve(memos);
       });
 
-      rl.on("error", (error) => {
-        reject(error);
+      rl.on("error", () => {
+        reject(new Error("入力中にエラーが発生しました。"));
         rl.close();
       });
     });

@@ -2,6 +2,7 @@ import { Database } from "./database.js";
 import { CommandLine } from "./command_line.js";
 import { MemosManager } from "./memos_manager.js";
 import { UserInput } from "./user_input.js";
+import { handleTypeError } from "./handle_error.js";
 
 export class App {
   #commandLine;
@@ -44,15 +45,23 @@ export class App {
   }
 
   async #outputFirstRowsOfMemos() {
-    const firstRows = await this.#memosManager.fetchFirstRows();
-    console.log(firstRows.join("\n"));
+    try {
+      const firstRows = await this.#memosManager.fetchFirstRows();
+      console.log(firstRows.join("\n"));
+    } catch (error) {
+      handleTypeError(error);
+    }
   }
 
   async #selectAndOutputMemo(choices) {
-    const message = "Choose a memo you want to see:";
-    const id = await this.#selectMemo(message, choices);
-    const memo = await this.#memosManager.fetchMemo(id);
-    console.log(memo.content);
+    try {
+      const message = "Choose a memo you want to see:";
+      const id = await this.#selectMemo(message, choices);
+      const memo = await this.#memosManager.fetchMemo(id);
+      console.log(memo.content);
+    } catch (error) {
+      handleTypeError(error);
+    }
   }
 
   async #selectAndDeleteMemo(choices) {

@@ -1,4 +1,8 @@
 import { MemoDetail } from "./memo_detail.js";
+import {
+  handleSqliteConstraintError,
+  handleSqliteGeneralError,
+} from "./handle_error.js";
 
 export class MemosManager {
   #database;
@@ -8,21 +12,33 @@ export class MemosManager {
   }
 
   async addMemo(memo) {
-    return await this.#database.update(
-      "INSERT INTO memos ( content ) VALUES ( ? )",
-      memo,
-    );
+    try {
+      return await this.#database.update(
+        "INSERT INTO memos ( content ) VALUES ( ? )",
+        memo,
+      );
+    } catch (error) {
+      handleSqliteConstraintError(error);
+    }
   }
 
   async fetchMemo(id) {
-    return await this.#database.fetchRow(
-      `SELECT content FROM memos WHERE id = ? `,
-      id,
-    );
+    try {
+      return await this.#database.fetchRow(
+        `SELECT content FROM memos WHERE id = ? `,
+        id,
+      );
+    } catch (error) {
+      handleSqliteGeneralError(error);
+    }
   }
 
   async deleteMemo(id) {
-    return await this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
+    try {
+      return await this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
+    } catch (error) {
+      handleSqliteGeneralError(error);
+    }
   }
 
   async fetchFirstRows() {
@@ -48,6 +64,10 @@ export class MemosManager {
   }
 
   async #fetchAllMemos() {
-    return await this.#database.fetchAllRows("SELECT * FROM memos");
+    try {
+      return await this.#database.fetchAllRows("SELECT * FROM memos");
+    } catch (error) {
+      handleSqliteGeneralError(error);
+    }
   }
 }

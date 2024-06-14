@@ -1,4 +1,5 @@
 import sqlite3 from "sqlite3";
+import { handleSqliteGeneralError } from "./handle_error.js";
 
 export class Database {
   #connection;
@@ -44,23 +45,31 @@ export class Database {
   }
 
   async createTableIfNotExist(tableName, column) {
-    const isNotTable = await this.#isNotTable(tableName);
+    try {
+      const isNotTable = await this.#isNotTable(tableName);
 
-    if (isNotTable) {
-      await this.update(`CREATE TABLE ${tableName} ( ${column} )`);
+      if (isNotTable) {
+        await this.update(`CREATE TABLE ${tableName} ( ${column} )`);
+      }
+    } catch (error) {
+      handleSqliteGeneralError(error);
     }
   }
 
   async #isNotTable(tableName) {
-    const response = await this.fetchRow(
-      "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ( ? )",
-      tableName,
-    );
+    try {
+      const response = await this.fetchRow(
+        "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ( ? )",
+        tableName,
+      );
 
-    if (typeof response === "undefined") {
-      return true;
-    } else {
-      return false;
+      if (typeof response === "undefined") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      handleSqliteGeneralError(error);
     }
   }
 }
