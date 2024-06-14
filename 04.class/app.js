@@ -22,55 +22,54 @@ export class App {
       "memos",
       "id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL",
     );
-    await this.#runUserInput();
+    await this.#executeActionForOption();
   }
 
-  async #runUserInput() {
-    if (this.#commandLine.isOption()) {
-      await this.#runEnquirer();
-    } else {
+  async #executeActionForOption() {
+    const isListOption = this.#commandLine.options["list"];
+    const isReadOption = this.#commandLine.options["read"];
+    const isDeleteOption = this.#commandLine.options["delete"];
+    const isNotOption = !this.#commandLine.isOption();
+    const choices = this.#memosManager.buildChoices();
+
+    if (isListOption) {
+      await this.#outputFirstRowsOfMemos();
+    } else if (isReadOption) {
+      await this.#selectAndOutputMemo(choices);
+    } else if (isDeleteOption) {
+      await this.#selectAndDeleteMemo(choices);
+    } else if (isNotOption) {
       await this.#createNewMemo();
     }
   }
 
-  async #runEnquirer() {
-    const choices = this.#memosManager.buildChoices();
-
-    if (this.#commandLine.options["list"]) {
-      this.#handleListOption();
-    } else if (this.#commandLine.options["read"]) {
-      await this.#handleReadOption(choices);
-    } else if (this.#commandLine.options["delete"]) {
-      await this.#handleDeleteOption(choices);
-    }
-  }
-
-  async #createNewMemo() {
-    const newMemo = await this.#userInput.runReadline();
-    await this.#memosManager.add(newMemo);
-  }
-
-  async #handleListOption() {
+  async #outputFirstRowsOfMemos() {
     const firstRows = await this.#memosManager.fetchFirstRows();
     console.log(firstRows.join("\n"));
   }
 
-  async #handleReadOption(choices) {
-    const id = await this.#userInput.runEnquirerOfSelect({
-      message: "Choose a memo you want to see:",
-      choices: choices,
-    });
-
-    const memo = await this.#memosManager.fetch(id);
+  async #selectAndOutputMemo(choices) {
+    const message = "Choose a memo you want to see:";
+    const id = await this.#selectMemo(message, choices);
+    const memo = await this.#memosManager.fetchMemo(id);
     console.log(memo.content);
   }
 
-  async #handleDeleteOption(choices) {
-    const id = await this.#userInput.runEnquirerOfSelect({
-      message: "Choose a memo you want to delete:",
+  async #selectAndDeleteMemo(choices) {
+    const message = "Choose a memo you want to delete:";
+    const id = await this.#selectMemo(message, choices);
+    await this.#memosManager.deleteMemo(id);
+  }
+
+  async #selectMemo(message, choices) {
+    return await this.#userInput.runEnquirerOfSelect({
+      message: message,
       choices: choices,
     });
+  }
 
-    await this.#memosManager.delete(id);
+  async #createNewMemo() {
+    const newMemo = await this.#userInput.runReadline();
+    await this.#memosManager.addMemo(newMemo);
   }
 }
