@@ -27,38 +27,27 @@ export class MemosManager {
 
   async fetchFirstRows() {
     const firstRows = [];
-    const memoDetails = await this.#buildMemoDetails();
+    const memos = await this.#fetchAllMemos();
 
-    memoDetails.forEach((memoDetail) => {
+    memos.forEach((memo) => {
+      const memoDetail = new MemoDetail(memo.id, memo.content);
       firstRows.push(memoDetail.firstRow);
     });
-
     return firstRows;
   }
 
-  async buildChoices() {
+  async fetchChoices() {
     const choices = [];
-    const memoDetails = await this.#buildMemoDetails();
+    const memos = await this.#fetchAllMemos();
 
-    memoDetails.forEach((memoDetail) => {
-      choices.push({ name: memoDetail.id, message: memoDetail.firstRow });
+    memos.forEach((memo) => {
+      const memoDetail = new MemoDetail(memo.id, memo.content);
+      choices.push(memoDetail.choiceOfEnquirer);
     });
-
     return choices;
   }
 
   async #fetchAllMemos() {
     return await this.#database.fetchAllRows("SELECT * FROM memos");
-  }
-
-  async #buildMemoDetails() {
-    const memoDetails = [];
-    const memos = await this.#fetchAllMemos();
-
-    memos.forEach((memo) => {
-      memoDetails.push(new MemoDetail(memo.id, memo.content));
-    });
-
-    return memoDetails;
   }
 }

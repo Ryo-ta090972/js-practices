@@ -30,7 +30,7 @@ export class App {
     const isReadOption = this.#commandLine.options["read"];
     const isDeleteOption = this.#commandLine.options["delete"];
     const isNotOption = !this.#commandLine.isOption();
-    const choices = this.#memosManager.buildChoices();
+    const choices = this.#memosManager.fetchChoices();
 
     if (isListOption) {
       await this.#outputFirstRowsOfMemos();
