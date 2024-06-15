@@ -25,7 +25,7 @@ export class MemosManager {
   async fetchMemo(id) {
     try {
       return this.#database.fetchRow(
-        `SELECT content FROM memos WHERE id = ? `,
+        "SELECT content FROM memos WHERE id = ? ",
         id,
       );
     } catch (error) {
@@ -35,7 +35,7 @@ export class MemosManager {
 
   async deleteMemo(id) {
     try {
-      return this.#database.update(`DELETE FROM memos WHERE id = ? `, id);
+      return this.#database.update("DELETE FROM memos WHERE id = ? ", id);
     } catch (error) {
       handleSqliteGeneralError(error);
     }

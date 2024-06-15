@@ -27,9 +27,9 @@ export class App {
   }
 
   async #executeActionForOption() {
-    const isListOption = this.#commandLine.options["list"];
-    const isReadOption = this.#commandLine.options["read"];
-    const isDeleteOption = this.#commandLine.options["delete"];
+    const isListOption = this.#commandLine.options.list;
+    const isReadOption = this.#commandLine.options.read;
+    const isDeleteOption = this.#commandLine.options.delete;
     const isNotOption = !this.#commandLine.isOption();
     const choices = this.#memosManager.fetchChoices();
 
@@ -72,8 +72,8 @@ export class App {
 
   async #selectMemo(message, choices) {
     return this.#userInput.runEnquirerOfSelect({
-      message: message,
-      choices: choices,
+      message,
+      choices,
     });
   }
 

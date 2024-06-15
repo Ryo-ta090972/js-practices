@@ -15,9 +15,9 @@ export class UserInput {
       const response = await this.#prompt({
         type: "select",
         name: "id",
-        message: message,
-        limit: limit,
-        choices: choices,
+        message,
+        limit,
+        choices,
       });
 
       return response.id;
