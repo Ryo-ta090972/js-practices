@@ -1,4 +1,4 @@
-import { MemoDetail } from "./memo_detail.js";
+import { MemoEntity } from "./memo_entity.js";
 import {
   handleSqliteConstraintError,
   handleSqliteGeneralError,
@@ -46,7 +46,7 @@ export class MemosManager {
     const memos = await this.#fetchAllMemos();
 
     memos.forEach((memo) => {
-      const memoDetail = new MemoDetail(memo.id, memo.content);
+      const memoDetail = new MemoEntity(memo.id, memo.content);
       firstRows.push(memoDetail.firstRow);
     });
     return firstRows;
@@ -57,7 +57,7 @@ export class MemosManager {
     const memos = await this.#fetchAllMemos();
 
     memos.forEach((memo) => {
-      const memoDetail = new MemoDetail(memo.id, memo.content);
+      const memoDetail = new MemoEntity(memo.id, memo.content);
       choices.push(memoDetail.choiceOfEnquirer);
     });
     return choices;

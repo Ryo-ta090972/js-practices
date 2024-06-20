@@ -1,4 +1,4 @@
-export class MemoDetail {
+export class MemoEntity {
   #id;
   #content;
 
