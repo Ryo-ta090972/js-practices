@@ -11,6 +11,7 @@
   "type": "module",
   "dependencies": {
     "commander": "^12.1.0",
-    "enquirer": "^2.4.1"
+    "enquirer": "^2.4.1",
+    "sqlite3": "^5.1.7"
   }
 }
