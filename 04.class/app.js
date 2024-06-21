@@ -1,19 +1,20 @@
 import { Database } from "./database.js";
 import { CommandLine } from "./command_line.js";
-import { MemosManager } from "./memos_manager.js";
+import { MemoDatabaseManager } from "./memo_database_manager.js";
+import { MemoEntity } from "./memo_entity.js";
 import { UserInput } from "./user_input.js";
 import { handleTypeError } from "./handle_error.js";
 
 export class App {
   #commandLine;
   #database;
-  #memosManager;
+  #memosDatabaseManager;
   #userInput;
 
   constructor() {
     this.#commandLine = new CommandLine();
     this.#database = new Database("./memo.sqlite3");
-    this.#memosManager = new MemosManager(this.#database);
+    this.#memosDatabaseManager = new MemoDatabaseManager(this.#database);
     this.#userInput = new UserInput();
   }
 
@@ -31,43 +32,61 @@ export class App {
     const isReadOption = this.#commandLine.options.read;
     const isDeleteOption = this.#commandLine.options.delete;
     const isNotOption = !this.#commandLine.isOption();
-    const choices = this.#memosManager.fetchChoices();
+    const memos = await this.#memosDatabaseManager.fetchAll();
 
     if (isListOption) {
-      this.#outputFirstRowsOfMemos();
+      this.#outputFirstRows(memos);
     } else if (isReadOption) {
-      this.#selectAndOutputMemo(choices);
+      this.#selectAndOutputMemo(memos);
     } else if (isDeleteOption) {
-      this.#selectAndDeleteMemo(choices);
+      this.#selectAndDeleteMemo(memos);
     } else if (isNotOption) {
       this.#createNewMemo();
     }
   }
 
-  async #outputFirstRowsOfMemos() {
-    try {
-      const firstRows = await this.#memosManager.fetchFirstRows();
-      console.log(firstRows.join("\n"));
-    } catch (error) {
-      handleTypeError(error);
-    }
+  #outputFirstRows(memos) {
+    const firstRows = this.#buildFirstRows(memos);
+    console.log(firstRows.join("\n"));
   }
 
-  async #selectAndOutputMemo(choices) {
+  #buildFirstRows(memos) {
+    const firstRows = [];
+
+    memos.forEach((memo) => {
+      const memoEntity = new MemoEntity(memo.id, memo.content);
+      firstRows.push(memoEntity.firstRow);
+    });
+    return firstRows;
+  }
+
+  async #selectAndOutputMemo(memos) {
     try {
       const message = "Choose a memo you want to see:";
+      const choices = this.#buildChoices(memos);
       const id = await this.#selectMemo(message, choices);
-      const memo = await this.#memosManager.fetchMemo(id);
+      const memo = await this.#memosDatabaseManager.fetch(id);
       console.log(memo.content);
     } catch (error) {
       handleTypeError(error);
     }
   }
 
-  async #selectAndDeleteMemo(choices) {
+  async #selectAndDeleteMemo(memos) {
     const message = "Choose a memo you want to delete:";
+    const choices = this.#buildChoices(memos);
     const id = await this.#selectMemo(message, choices);
-    this.#memosManager.deleteMemo(id);
+    this.#memosDatabaseManager.delete(id);
+  }
+
+  #buildChoices(memos) {
+    const choices = [];
+
+    memos.forEach((memo) => {
+      const memoEntity = new MemoEntity(memo.id, memo.content);
+      choices.push({ name: memoEntity.id, message: memoEntity.firstRow });
+    });
+    return choices;
   }
 
   async #selectMemo(message, choices) {
@@ -79,6 +98,6 @@ export class App {
 
   async #createNewMemo() {
     const newMemo = await this.#userInput.runReadline();
-    this.#memosManager.addMemo(newMemo);
+    this.#memosDatabaseManager.add(newMemo);
   }
 }

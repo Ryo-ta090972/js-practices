@@ -19,10 +19,6 @@ export class MemoEntity {
     return this.#extractFirstRow();
   }
 
-  get choiceOfEnquirer() {
-    return { name: this.id, message: this.firstRow };
-  }
-
   #extractFirstRow() {
     const indexOfFirstRow = this.#content.indexOf("\n");
 
