@@ -32,17 +32,17 @@ export class MemoDatabaseManager {
     }
   }
 
-  async delete(id) {
+  async fetchAll() {
     try {
-      return this.#database.update("DELETE FROM memos WHERE id = ? ", id);
+      return this.#database.fetchAllRows("SELECT * FROM memos");
     } catch (error) {
       handleSqliteGeneralError(error);
     }
   }
 
-  async fetchAll() {
+  async delete(id) {
     try {
-      return this.#database.fetchAllRows("SELECT * FROM memos");
+      return this.#database.update("DELETE FROM memos WHERE id = ? ", id);
     } catch (error) {
       handleSqliteGeneralError(error);
     }
